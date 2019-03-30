@@ -11,9 +11,12 @@ Display::Display() {
         this->bitMatrix[i] = 0xFF;
     }
     wiringPiSetup();
-    pinMode(SER, OUTPUT);
-    pinMode(RCLK, OUTPUT);
-    pinMode(SRLCLK, OUTPUT);
+    pinMode(P_SER, OUTPUT);
+    pinMode(P_RCLK, OUTPUT);
+    pinMode(P_SRLCLK, OUTPUT);
+    pinMode(N_SER, OUTPUT);
+    pinMode(N_RCLK, OUTPUT);
+    pinMode(N_SRLCLK, OUTPUT);
 }
 
 void Display::shiftOut(int data, int serial, int clock) {
@@ -49,7 +52,7 @@ void Display::refresh() {
 
 void Display::start() {
     std::thread th(
-            []{while(true) refresh();}
+            [&]{while(true) refresh();}
     );
 }
 
