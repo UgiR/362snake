@@ -8,15 +8,20 @@ Display* Display::instance = nullptr;
 
 Display::Display() {
     for (int i = 0; i < 16; ++i) {
-        this->bitMatrix[i] = 0xFF;
+        this->bitMatrix[i] = 0xFFFF;
     }
     wiringPiSetup();
     pinMode(P_SER, OUTPUT);
     pinMode(P_RCLK, OUTPUT);
     pinMode(P_SRLCLK, OUTPUT);
+    pinMode(P_CLR, OUTPUT);
     pinMode(N_SER, OUTPUT);
     pinMode(N_RCLK, OUTPUT);
     pinMode(N_SRLCLK, OUTPUT);
+    pinMode(N_CLR, OUTPUT);
+
+    digitalWrite(P_CLR, HIGH);
+    digitalWrite(N_CLR, HIGH);
 }
 
 void Display::shiftOut(int data, int serial, int clock) {
@@ -52,8 +57,10 @@ void Display::refresh() {
 
 void Display::start() {
     std::thread th(
-            [&]{while(true) refresh();}
+            [&]{while(true) refresh();
+	}
     );
+    th.detach();
 }
 
 Display& Display::get() {
@@ -63,7 +70,7 @@ Display& Display::get() {
 
 void Display::setPixel(int x, int y, int state) {
     int i = 0x8000 >> x;
-    if (state)
+    if (!state)
         this->bitMatrix[y] |= i;
     else
         this->bitMatrix[y] &= ~i;

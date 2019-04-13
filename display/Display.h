@@ -6,17 +6,18 @@
 #define INC_362SNAKE_DISPLAY_H
 
 #include <wiringPi.h>
-#include <thread>   
+#include <thread>
+#include <unistd.h>
 
-#define P_SER 11
-#define P_RCLK 12
-#define P_SRLCLK 13
-#define P_CLR 15
+#define P_SER 0
+#define P_RCLK 1
+#define P_SRLCLK 2
+#define P_CLR 3
 
-#define N_SER 31
-#define N_RCLK 33
-#define N_SRLCLK 35
-#define N_CLR 37
+#define N_SER 22
+#define N_RCLK 23
+#define N_SRLCLK 24
+#define N_CLR 25
 
 class Display {
 private:
@@ -32,10 +33,10 @@ private:
     void refresh();
 
 public:
-    Display(const Display& display) = delete;
-    Display(const Display&& display) = delete;
-    Display& operator=(const Display&) = delete;
-    Display& operator=(const Display&&) = delete;
+//    Display(const Display& display) = delete;
+//    Display(const Display&& display) = delete;
+//    Display& operator=(const Display&) = delete;
+//    Display& operator=(const Display&&) = delete;
 
     void start();
 
