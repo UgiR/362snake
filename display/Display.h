@@ -8,6 +8,7 @@
 #include <wiringPi.h>
 #include <thread>
 #include <unistd.h>
+#include <stdint.h>
 
 /**
  * SER    : serial
@@ -44,7 +45,14 @@ private:
 
     Display();
 
-    void shiftOut(int data, int serial, int clock);
+    /**
+     * Shifts out 16 bits using the given serial and clock pins
+     *
+     * @param data data to shift out
+     * @param serial serial pin number
+     * @param clock serial clock pin number
+     */
+    void shiftOut(uint_fast16_t data, int serial, int clock);
 
     void toggle(int pin);
 

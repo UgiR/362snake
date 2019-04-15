@@ -46,16 +46,17 @@ def index():
 @app.route('/scores', methods=['GET', 'POST'])
 def scores():
     if request.method == 'POST':
-        if not request.json or not 'score' in request.json:
+        if not request.json or 'score' not in request.json:
             abort(400)
         entry = Score.create(score=request.json['score'])
         entry.save()
     elif request.method == 'GET':
-        # retrieve scores
-        pass
-
+        scores = Score.query.order_by(Score.score.amount.desc()).all()
+        response = {}
+        for entry in scores:
+            response[entry.id] = entry.score
+        return response
 
 
 if __name__ == '__main__':
     app.run()
-    db.create_all()

@@ -24,7 +24,7 @@ Display::Display() {
     digitalWrite(N_CLR, HIGH);
 }
 
-void Display::shiftOut(int data, int serial, int clock) {
+void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
     for (int i = 0; i < 16; ++i) {
         digitalWrite(serial, (data >> i) & 0b1);
         toggle(clock);
