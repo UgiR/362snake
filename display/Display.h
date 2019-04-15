@@ -12,6 +12,37 @@
 #include <stdint.h>
 
 /**
+ **** Physical Design ****
+ * To better understand the code contained in Display.cpp, an explanation of the hardware is provided below
+ *
+ * NOTE:
+ * Two 595 shift registers are daisy-chained to allow for 16 outputs. Because these two 595's behave as a single 16-bit
+ * register, it will be referred to as a '16-bit register' throughout this documentation, even though they are
+ * technically two separate registers.
+ *
+ * The physical display is a 16 x 16 matrix of LED's, making up a total of 256 individual LEDs. In every row of the
+ * matrix, each LED's cathode is connected in parallel. In every column of the matrix, each LED's anode is connected
+ * in parallel. All rows are connected to a 16-bit register and all column are connected to a different 16-bit register.
+ * These registers' pins are differentiated below by a prefix. The register corresponding to the rows (the negative
+ * connections) is controlled by the pins prefixed by 'N_'. The register corresponding to the columns (the positive
+ * connections) is controlled by the pins prefixed by 'P_'.
+ *
+ **** Driving the Physical Display ****
+ * With the physical design as described above, one would toggle an individual LED by grounding the row the LED resides
+ * in and providing voltage to the column the LED resides in. This works as intended for simple patterns such as
+ * straight lines but cannot produce more complex patterns such as diagonals. Attempting to display a diagonal line
+ * with the technique described would result in a square shape being displayed.
+ *
+ * To allow for more complex shapes, the driver class must not toggle all LED's of the intended pattern simultaneously.
+ * Instead, the driver must loop over each row and display each row's pattern sequentially. This happens fast enough
+ * for the human eye to interpret the pattern as being displayed concurrently.
+ *
+ * This behavior mimics pulse width modulation. This means that the average current received by each LED is lower,
+ * making it appear dimmer.
+ *
+ *
+ **** PIN DEFINITIONS ****
+ *
  * SER    : serial
  * RCLK   : register clock
  * SRLCLK : serial clock
@@ -21,6 +52,13 @@
  * P_ : pin for 'positive' connection
  * N_ : pin for 'negative' connection
  *
+ * TODO: Universal register clock
+ * All 595's share the register clock
+ *
+ * WiringPi's pin numbering system is used
+ * Pin numbers are NOT referencing GPIO pin numbers
+ * More info on WiringPi pin numbering:
+ * http://wiringpi.com/pins/
  */
 #define P_SER 0
 #define P_RCLK 1
@@ -68,6 +106,7 @@ private:
     void refresh();
 
 public:
+
     Display(const Display& display) = delete;
     Display(const Display&& display) = delete;
     Display& operator=(const Display&) = delete;
