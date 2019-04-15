@@ -7,6 +7,7 @@
 
 #include <wiringPi.h>
 #include <thread>
+#include <atomic>
 #include <unistd.h>
 #include <stdint.h>
 
@@ -42,6 +43,7 @@
 class Display {
 private:
     int bitMatrix[16];
+    std::atomic<bool> refreshThreadRunning;
 
     Display();
 
@@ -54,8 +56,15 @@ private:
      */
     void shiftOut(uint_fast16_t data, int serial, int clock);
 
+    /**
+     * Toggles pin - sets HIGH, then LOW
+     * @param pin pin to toggle
+     */
     void toggle(int pin);
 
+    /**
+     * Refreshes display based on pattern in bitMatrix
+     */
     void refresh();
 
 public:
@@ -64,10 +73,23 @@ public:
     Display& operator=(const Display&) = delete;
     Display& operator=(const Display&&) = delete;
 
+    /**
+     * Spawns thread to constantly refresh display
+     */
     void start();
 
+    /**
+     *
+     * @return singleton Display instance
+     */
     static Display& get();
 
+    /**
+     * Sets pixel on (HIGH) or off (LOW)
+     * @param x x-coord of pixel
+     * @param y y-coord of pixel
+     * @param state HIGH/LOW (1/0)
+     */
     void setPixel(int x, int y, int state);
 
 };

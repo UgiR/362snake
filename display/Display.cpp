@@ -6,10 +6,13 @@
 
 Display* Display::instance = nullptr;
 
-Display::Display() {
+Display::Display()
+: refreshThreadRunning(false)
+{
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
     }
+
     wiringPiSetup();
     pinMode(P_SER, OUTPUT);
     pinMode(P_RCLK, OUTPUT);
@@ -22,6 +25,10 @@ Display::Display() {
 
     digitalWrite(P_CLR, HIGH);
     digitalWrite(N_CLR, HIGH);
+}
+
+Display::~Display() {
+    refreshThreadRunning = false;
 }
 
 void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
@@ -55,8 +62,9 @@ void Display::refresh() {
 }
 
 void Display::start() {
+    refreshThreadRunning = true;
     std::thread th(
-            [&]{while(true) refresh();}
+            [&]{while(refreshThreadRunning.load()) refresh();}
     );
     th.detach();
 }
