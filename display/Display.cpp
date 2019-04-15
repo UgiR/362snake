@@ -27,8 +27,7 @@ Display::Display() {
 void Display::shiftOut(int data, int serial, int clock) {
     for (int i = 0; i < 16; ++i) {
         digitalWrite(serial, (data >> i) & 0b1);
-        digitalWrite(clock, HIGH);
-        digitalWrite(clock, LOW);
+        toggle(clock);
     }
 }
 
@@ -57,21 +56,20 @@ void Display::refresh() {
 
 void Display::start() {
     std::thread th(
-            [&]{while(true) refresh();
-	}
+            [&]{while(true) refresh();}
     );
     th.detach();
 }
 
-Display& Display::get() {
+static Display& Display::get() {
     static Display instance;
     return instance;
 }
 
 void Display::setPixel(int x, int y, int state) {
     int i = 0x8000 >> x;
-    if (!state)
-        this->bitMatrix[y] |= i;
-    else
+    if (state)
         this->bitMatrix[y] &= ~i;
+    else
+        this->bitMatrix[y] |= i;
 }

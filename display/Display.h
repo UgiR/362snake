@@ -9,6 +9,17 @@
 #include <thread>
 #include <unistd.h>
 
+/**
+ * SER    : serial
+ * RCLK   : register clock
+ * SRLCLK : serial clock
+ * CLR    : clear
+ *
+ * Prefixes:
+ * P_ : pin for 'positive' connection
+ * N_ : pin for 'negative' connection
+ *
+ */
 #define P_SER 0
 #define P_RCLK 1
 #define P_SRLCLK 2
@@ -19,9 +30,16 @@
 #define N_SRLCLK 24
 #define N_CLR 25
 
+/**
+ * Display driver for Snake Display
+ * This is a singleton class, only one instance will be created.
+ *
+ * Usage:
+ *     Display display = Display::get();
+ *     display.setPixel(...);
+ */
 class Display {
 private:
-    static Display *instance; //init to nullptr in .c file
     int bitMatrix[16];
 
     Display();
@@ -33,10 +51,10 @@ private:
     void refresh();
 
 public:
-//    Display(const Display& display) = delete;
-//    Display(const Display&& display) = delete;
-//    Display& operator=(const Display&) = delete;
-//    Display& operator=(const Display&&) = delete;
+    Display(const Display& display) = delete;
+    Display(const Display&& display) = delete;
+    Display& operator=(const Display&) = delete;
+    Display& operator=(const Display&&) = delete;
 
     void start();
 
