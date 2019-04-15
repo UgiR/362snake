@@ -1,0 +1,6 @@
+# Cache files
+*.pyc
+*.pyo
+__pycache__/
+
+app.db
