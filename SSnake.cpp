@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <unistd.h>
 #include "uint4.h"
 
 enum direction {
@@ -148,11 +149,14 @@ public:
                 debug[x][y] = false;
             }
         }
+        usleep(500*1000);
+        std::cout << "\033[2J\033[1;1H"; // clear screen
     }
 };
 
 int main() {
     SSnake s;
+    std::cout << "\033[2J\033[1;1H"; // clear screen
     s.grow();
     s.grow();
     s.grow();
