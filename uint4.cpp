@@ -54,27 +54,27 @@ uint4 operator-(uint4 lx, const uint4& rx) {
     return lx;
 }
 
-inline bool operator==(const uint4& lx, const uint4& rx) {
+bool operator==(const uint4& lx, const uint4& rx) {
     return (lx.i == rx.i);
 }
 
-inline bool operator!=(const uint4& lx, const uint4& rx) {
+bool operator!=(const uint4& lx, const uint4& rx) {
     return !operator==(lx, rx);
 }
 
-inline bool operator<(const uint4& lx, const uint4& rx) {
+bool operator<(const uint4& lx, const uint4& rx) {
     return (lx.i < rx.i);
 }
 
-inline bool operator>(const uint4& lx, const uint4& rx) {
+bool operator>(const uint4& lx, const uint4& rx) {
     return operator<(rx, lx);
 }
 
-inline bool operator<=(const uint4& lx, const uint4& rx) {
+bool operator<=(const uint4& lx, const uint4& rx) {
     return !operator>(lx, rx);
 }
 
-inline bool operator>=(const uint4& lx, const uint4& rx) {
+bool operator>=(const uint4& lx, const uint4& rx) {
     return !operator<(lx, rx);
 }
 

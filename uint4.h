@@ -30,17 +30,17 @@ public:
 
     friend uint4 operator-(uint4 lx, const uint4& rx);
 
-    friend inline bool operator==(const uint4& lx, const uint4& rx);
+    friend bool operator==(const uint4& lx, const uint4& rx);
 
-    friend inline bool operator!=(const uint4& lx, const uint4& rx);
+    friend bool operator!=(const uint4& lx, const uint4& rx);
 
-    friend inline bool operator<(const uint4& lx, const uint4& rx);
+    friend bool operator<(const uint4& lx, const uint4& rx);
 
-    friend inline bool operator>(const uint4& lx, const uint4& rx);
+    friend bool operator>(const uint4& lx, const uint4& rx);
 
-    friend inline bool operator<=(const uint4& lx, const uint4& rx);
+    friend bool operator<=(const uint4& lx, const uint4& rx);
 
-    friend inline bool operator>=(const uint4& lx, const uint4& rx);
+    friend bool operator>=(const uint4& lx, const uint4& rx);
 
     operator int() const ;
 };
