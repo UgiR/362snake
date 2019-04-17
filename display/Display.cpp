@@ -4,8 +4,6 @@
 
 #include "Display.h"
 
-Display* Display::instance = nullptr;
-
 Display::Display()
 : refreshThreadRunning(false)
 {
