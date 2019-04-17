@@ -21,24 +21,25 @@
  * technically two separate registers.
  *
  * The physical display is a 16 x 16 matrix of LED's, making up a total of 256 individual LEDs. In every row of the
- * matrix, each LED's cathode is connected in parallel. In every column of the matrix, each LED's anode is connected
- * in parallel. All rows are connected to a 16-bit register and all column are connected to a different 16-bit register.
+ * matrix, each LEDs' cathodes are connected in parallel. In every column of the matrix, each LEDs' anodes are connected
+ * in parallel. All rows are connected to a 16-bit register and all columns are connected to a different 16-bit register.
  * These registers' pins are differentiated below by a prefix. The register corresponding to the rows (the negative
  * connections) is controlled by the pins prefixed by 'N_'. The register corresponding to the columns (the positive
  * connections) is controlled by the pins prefixed by 'P_'.
  *
  **** Driving the Physical Display ****
  * With the physical design as described above, one would toggle an individual LED by grounding the row the LED resides
- * in and providing voltage to the column the LED resides in. This works as intended for simple patterns such as
- * straight lines but cannot produce more complex patterns such as diagonals. Attempting to display a diagonal line
- * with the technique described would result in a square shape being displayed.
+ * in and providing voltage to the column the LED resides in. In the intersection of the row and column, the LED is now
+ * pare of a complete circuit. This works as intended for simple patterns such as straight lines but cannot produce more
+ * complex patterns such as diagonals. Attempting to display a diagonal line with the technique described would result
+ * in a square shape being displayed.
  *
  * To allow for more complex shapes, the driver class must not toggle all LED's of the intended pattern simultaneously.
  * Instead, the driver must loop over each row and display each row's pattern sequentially. This happens fast enough
  * for the human eye to interpret the pattern as being displayed concurrently.
  *
- * This behavior mimics pulse width modulation. This means that the average current received by each LED is lower,
- * making it appear dimmer.
+ * A side effect of this technique is that it mimics pulse width modulation. This means that the average current
+ * received by each LED is lower, resulting in a dimmer light.
  *
  *
  **** PIN DEFINITIONS ****
@@ -60,6 +61,7 @@
  * More info on WiringPi pin numbering:
  * http://wiringpi.com/pins/
  */
+
 #define P_SER 0
 #define P_RCLK 1
 #define P_SRLCLK 2
