@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
@@ -35,26 +35,32 @@ class CRUD:
 
 class Score(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer)
+    value = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {'id': self.id,
+                'value': self.value}
 
 
 @app.route('/')
 def index():
-    return 'index.html'
+    scores_ = Score.query.order_by(Score.value.desc()).all()
+    return render_template('index.html', scores=scores_)
 
 
 @app.route('/scores', methods=['GET', 'POST'])
 def scores():
     if request.method == 'POST':
-        if not request.json or 'score' not in request.json:
+        if 'value' not in request.args:
             abort(400)
-        entry = Score.create(score=request.json['score'])
+        entry = Score.create(value=request.args.get('value'))
         entry.save()
+        return jsonify(entry.to_dict()), 200
     elif request.method == 'GET':
-        scores = Score.query.order_by(Score.score.amount.desc()).all()
+        scores_ = Score.query.order_by(Score.value.amount.desc()).all()
         response = {}
-        for entry in scores:
-            response[entry.id] = entry.score
+        for score in scores_:
+            response[score.id] = score.value
         return response
 
 
