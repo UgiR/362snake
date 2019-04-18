@@ -4,155 +4,120 @@
 
 #include <iostream>
 #include <unistd.h>
-#include "uint4.h"
+#include "SSnake.h"
 
-enum direction {
-    left = 1,
-    right = 2,
-    up = 3,
-    down = 4
-};
 
-class SSnake {
-private:
+SSnake::Segment::Segment(uint4 x, uint4 y)
+    : next(nullptr), prev(nullptr), x(x), y(y) {}
 
-    class Segment {
-    public:
-        Segment(uint4 x, uint4 y)
-        : next(nullptr), prev(nullptr) {
-            this->x = x;
-            this->y = y;
-        }
-
-    //private:
-        uint4 x;
-        uint4 y;
-        Segment *next;
-        Segment *prev;
-
-    public:
-        Segment *getNext() {
-            return next;
-        }
-
-        Segment *getPrev() {
-            return prev;
-        }
-
-        uint4 getX() {
-            return x;
-        }
-
-        uint4 getY() {
-            return y;
-        }
-    };
-
-    Segment *head;
-    Segment *tail;
-    direction dir;
-
-    bool debug[16][16];
-
-    void append(Segment *s) {
-        s->prev = this->tail;
-        this->tail->next = s;
-        this->tail = s;
+void SSnake::append(Segment *s) {
+    if (tail) { // if tail exists (list is not empty)
+        s->prev = tail;
+        tail->next = s;
+        tail = s;
     }
+    else { // list is empty
+        head = tail = s;
+    }
+}
 
-public:
+SSnake::SSnake() {
+    append(new Segment(8, 8));
+    append(new Segment(8, 9));
 
-    SSnake() {
-        this->head = new Segment(8, 8);
-        this->tail = head;
-        append(new Segment(8, 9));
-        for (int x = 0; x < 16; ++x) {
-            for (int y = 0; y < 16; ++y) {
-                debug[x][y] = false;
-            }
+    /*** Temporary code for debugging ***/
+    for (int x = 0; x < 16; ++x) {
+        for (int y = 0; y < 16; ++y) {
+            debug[x][y] = false;
         }
     }
+    /*** End temporary ***/
+}
 
-    void grow() {
-        Segment *t0;
-        Segment *t1;
-        t0 = this->tail;
-        if (t0) t1 = t0->prev;
+void SSnake::grow() {
+    Segment *t0; // last segment of the snake
+    Segment *t1; // second-to-last segment of the snake
+    t0 = this->tail;
+    t1 = t0->prev;
 
-        uint4 dx = t0->x - t1->x;
-        uint4 dy = t0->y - t1->y;
+    // Find the difference between the x and y coordinates between the two segments
+    // This is necessary to determine where the new segment will be places, relative to the tail
+    uint4 dx = t0->x - t1->x;
+    uint4 dy = t0->y - t1->y;
 
-        Segment *s = new Segment(tail->x + dx, tail->y + dy);
-        append(s);
+    Segment *s = new Segment(tail->x + dx, tail->y + dy);
+    append(s);
+}
+
+void SSnake::move() {
+    // dx and dy are the changes we must make to the head segment for it to move in the correct direction
+    uint4 dx = 0;
+    uint4 dy = 0;
+
+    switch(dir) {
+        case left:
+            dx = -1;
+            break;
+        case right:
+            dx = 1;
+            break;
+        case up:
+            dy = -1;
+            break;
+        case down:
+            dy = 1;
+            break;
     }
 
-    void move() {
-        uint4 dx = 0;
-        uint4 dy = 0;
+    uint4 px = head->x;
+    uint4 py = head->y;
 
-        switch(dir) {
-            case left:
-                dx = -1;
-                break;
-            case right:
-                dx = 1;
-                break;
-            case up:
-                dy = 1;
-                break;
-            case down:
-                dy = -1;
-                break;
-        }
+    // Change head segment coordinates in the correct direction
+    head->x += dx;
+    head->y += dy;
 
-        uint4 px = head->x;
-        uint4 py = head->y;
+    // Move all following segments forward
+    Segment *curr = head->next;
+    while(curr) {
+        uint4 temp_px = curr->x;
+        uint4 temp_py = curr->y;
+        curr->x = px;
+        curr->y = py;
+        px = temp_px;
+        py = temp_py;
+        curr = curr->next;
+    }
+}
 
-        head->x += dx;
-        head->y += dy;
+void SSnake::changeDirection(direction dir) {
+    this->dir = dir;
+}
 
-        Segment *curr = head->next;
-        while(curr) {
-            uint4 temp_px = curr->x;
-            uint4 temp_py = curr->y;
-            curr->x = px;
-            curr->y = py;
-            px = temp_px;
-            py = temp_py;
-            curr = curr->next;
-        }
+void SSnake::printDebug() {
+    Segment *s = this->head;
+    while(s) {
+        debug[(int)s->x][(int)s->y] = true;
+        s = s->next;
     }
 
-    void changeDirection(direction dir) {
-        this->dir = dir;
-    }
-
-    void printDebug() {
-        Segment *s = this->head;
-        while(s) {
-            debug[(int)s->x][(int)s->y] = true;
-            s = s->next;
-        }
-
-        for (int x = 0; x < 16; ++x) {
-            for (int y = 0; y < 16; ++y) {
-                char c;
-                if (debug[y][x]) c = 'O';
-                else c = '-';
-                std::cout << (char)c << " ";
-            }
-            std::cout << std::endl;
+    for (int x = 0; x < 16; ++x) {
+        for (int y = 0; y < 16; ++y) {
+            char c;
+            if (debug[y][x]) c = 'O';
+            else c = '-';
+            std::cout << (char)c << " ";
         }
         std::cout << std::endl;
-        for (int x = 0; x < 16; ++x) {
-            for (int y = 0; y < 16; ++y) {
-                debug[x][y] = false;
-            }
-        }
-        usleep(500*1000);
-        std::cout << "\033[2J\033[1;1H"; // clear screen
     }
-};
+    std::cout << std::endl;
+    for (int x = 0; x < 16; ++x) {
+        for (int y = 0; y < 16; ++y) {
+            debug[x][y] = false;
+        }
+    }
+    usleep(500*1000);
+    std::cout << "\033[2J\033[1;1H"; // clear screen
+}
 
 int main() {
     SSnake s;
@@ -169,6 +134,7 @@ int main() {
     s.printDebug();
     s.move();
     s.printDebug();
+    s.changeDirection(up);
     s.move();
     s.printDebug();
     s.move();
