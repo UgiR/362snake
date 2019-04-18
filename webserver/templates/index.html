@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <title>Snake - CS 362</title>
 </head>
-<body style="background-color:red;">
+<body style="background-color:green;">
+<font size = "5">
 <h3>HI SCORES</h3>
 
 <table>
     <font size = "4">
     {% for score in scores %}
         <tr>
-            <td>{{ score.value }}</td>
+            <td>
+            <font size = "4">
+            {{ score.value }}</td>
         </tr>
     {% endfor %}
 </table>
