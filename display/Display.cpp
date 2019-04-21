@@ -86,5 +86,5 @@ void Display::setPixel(int x, int y, int state) {
 }
 
 void Display::update() {
-    bitMatrix = bitMatrixStaging;
+    memcpy(bitMatrixStaging, bitMatrix, sizeof(bitMatrix));
 }
