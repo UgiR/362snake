@@ -64,6 +64,12 @@ void Display::refresh() {
     }
 }
 
+void Display::resetStage() {
+    for (int i = 0; i < 16; ++i) {
+        this->bitMatrixStaging[i] = 0xFFFF;
+    }
+}
+
 void Display::start() {
     refreshThreadRunning = true;
     std::thread th(
@@ -87,4 +93,5 @@ void Display::setPixel(int x, int y, int state) {
 
 void Display::update() {
     memcpy(bitMatrixStaging, bitMatrix, sizeof(bitMatrix));
+    resetStage();
 }

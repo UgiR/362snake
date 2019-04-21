@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "SSnake.h"
+#include "display/Display.h"
 
 
 SSnake::Segment::Segment(uint4 x, uint4 y)
@@ -119,32 +120,46 @@ void SSnake::printDebug() {
     std::cout << "\033[2J\033[1;1H"; // clear screen
 }
 
+void SSnake::printDisplay() {
+    Display& d = Display::get();
+    Segment *s = head;
+    while(s) {
+        d.setPixel(s->x, s->y);
+        s = s->next;
+    }
+    d.update();
+    usleep(500*1000);
+}
+
 int main() {
     SSnake s;
-    std::cout << "\033[2J\033[1;1H"; // clear screen
     s.grow();
+    s.printDisplay();
     s.grow();
+    s.printDisplay();
     s.grow();
+    s.printDisplay();
     s.grow();
-    s.printDebug();
+    s.printDisplay();
     s.changeDirection(left);
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.changeDirection(up);
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
     s.move();
-    s.printDebug();
+    s.printDisplay();
 }

@@ -88,6 +88,8 @@ public:
      * Temporary function to print a representation of the snake grid
      */
     void printDebug();
+
+    void printDisplay();
 };
 
 #endif //INC_362SNAKE_SSNAKE_H
