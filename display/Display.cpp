@@ -73,7 +73,7 @@ void Display::start() {
     th.detach();
 }
 
-static Display& Display::get() {
+Display& Display::get() {
     static Display instance;
     return instance;
 }
