@@ -82,6 +82,7 @@
 class Display {
 private:
     int bitMatrix[16];
+    int bitMatrixStaging[16];
     std::atomic<bool> refreshThreadRunning;
 
     Display();
@@ -133,6 +134,8 @@ public:
      * @param state HIGH/LOW (1/0)
      */
     void setPixel(int x, int y, int state);
+
+    void update();
 
 };
 

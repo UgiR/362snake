@@ -9,6 +9,7 @@ Display::Display()
 {
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
+        this->bitMatrixStaging[i] = 0xFFFF;
     }
 
     wiringPiSetup();
@@ -27,6 +28,7 @@ Display::Display()
 Display::~Display() {
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
+        this->bitMatrixStaging[i] = 0xFFFF;
     }
     toggle(P_CLR);
     toggle(N_CLR);
@@ -78,7 +80,11 @@ Display& Display::get() {
 void Display::setPixel(int x, int y, int state) {
     int i = 0x8000 >> x;
     if (state)
-        this->bitMatrix[y] &= ~i;
+        this->bitMatrixStaging[y] &= ~i;
     else
-        this->bitMatrix[y] |= i;
+        this->bitMatrixStaging[y] |= i;
+}
+
+void Display::update() {
+    bitMatrix = bitMatrixStaging;
 }

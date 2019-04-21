@@ -15,6 +15,7 @@ int main() {
     d.setPixel(15-x, 15-x, 0);
     d.setPixel(15-x, x, 0);
     d.setPixel(x, 15-x, 0);
+    d.update();
   }
   }
   return 0;
