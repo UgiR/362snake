@@ -10,6 +10,7 @@ int main() {
     d.setPixel(15-x, 15-x, 1);
     d.setPixel(15-x, x, 1);
     d.setPixel(x, 15-x, 1);
+    d.update();
     usleep(200 * 1000);
     d.setPixel(x, x, 0);
     d.setPixel(15-x, 15-x, 0);

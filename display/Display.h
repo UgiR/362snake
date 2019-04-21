@@ -107,6 +107,8 @@ private:
      */
     void refresh();
 
+    void resetStage();
+
 public:
 
     Display(const Display& display) = delete;
