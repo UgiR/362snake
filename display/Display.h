@@ -53,8 +53,7 @@
  * P_ : pin for 'positive' connection
  * N_ : pin for 'negative' connection
  *
- * TODO: Universal register clock
- * All 595's share the register clock
+ * Both registers share the register clock
  *
  * WiringPi's pin numbering system is used
  * Pin numbers are NOT referencing GPIO pin numbers
@@ -62,13 +61,13 @@
  * http://wiringpi.com/pins/
  */
 
+#define RCLK 1
+
 #define P_SER 0
-#define P_RCLK 1
 #define P_SRLCLK 2
 #define P_CLR 3
 
 #define N_SER 22
-#define N_RCLK 23
 #define N_SRLCLK 24
 #define N_CLR 25
 
@@ -86,8 +85,6 @@ private:
     std::atomic<bool> refreshThreadRunning;
 
     Display();
-
-    ~Display();
 
     /**
      * Shifts out 16 bits using the given serial and clock pins
@@ -115,6 +112,8 @@ public:
     Display(const Display&& display) = delete;
     Display& operator=(const Display&) = delete;
     Display& operator=(const Display&&) = delete;
+
+    ~Display();
 
     /**
      * Spawns thread to constantly refresh display

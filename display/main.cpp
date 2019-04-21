@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 int main() {
-  Display d = Display::get();
+  Display& d = Display::get();
   d.start();
   while(true){
   for (int x = 0; x < 16; ++x) {

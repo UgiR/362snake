@@ -5,7 +5,7 @@
 #include "Display.h"
 
 Display::Display()
-: refreshThreadRunning(false)
+: refreshThreadRunning{false}
 {
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
@@ -13,11 +13,10 @@ Display::Display()
 
     wiringPiSetup();
     pinMode(P_SER, OUTPUT);
-    pinMode(P_RCLK, OUTPUT);
+    pinMode(RCLK, OUTPUT);
     pinMode(P_SRLCLK, OUTPUT);
     pinMode(P_CLR, OUTPUT);
     pinMode(N_SER, OUTPUT);
-    pinMode(N_RCLK, OUTPUT);
     pinMode(N_SRLCLK, OUTPUT);
     pinMode(N_CLR, OUTPUT);
 
@@ -55,9 +54,7 @@ void Display::refresh() {
     for (int i = 0; i < 16; ++i) {
         // Shift out x-axis pattern
         shiftOut(this->bitMatrix[i], N_SER, N_SRLCLK);
-        //toggle(RCLK); // TODO: universal rclk
-        toggle(P_RCLK);
-        toggle(N_RCLK);
+        toggle(RCLK);
 
         // Advance y-axis bit to next position
         digitalWrite(P_SER, 0b0);
