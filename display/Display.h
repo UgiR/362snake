@@ -87,6 +87,8 @@ private:
 
     Display();
 
+    ~Display();
+
     /**
      * Shifts out 16 bits using the given serial and clock pins
      *
@@ -97,7 +99,7 @@ private:
     void shiftOut(uint_fast16_t data, int serial, int clock);
 
     /**
-     * Toggles pin - sets HIGH, then LOW
+     * Toggles pin - Sets pin to inverse of current state, and returns to current state
      * @param pin pin to toggle
      */
     void toggle(int pin);

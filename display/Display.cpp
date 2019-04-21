@@ -26,6 +26,11 @@ Display::Display()
 }
 
 Display::~Display() {
+    for (int i = 0; i < 16; ++i) {
+        this->bitMatrix[i] = 0xFFFF;
+    }
+    toggle(P_CLR);
+    toggle(N_CLR);
     refreshThreadRunning = false;
 }
 
@@ -37,8 +42,9 @@ void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
 }
 
 void Display::toggle(int pin) {
-    digitalWrite(pin, HIGH);
-    digitalWrite(pin, LOW);
+    int currState = digitalRead(pin);
+    digitalWrite(pin, !currState);
+    digitalWrite(pin, currState);
 }
 
 void Display::refresh() {
