@@ -2,6 +2,7 @@
 // Created by Ugnius on 3/28/2019.
 //
 
+#include <cstring>
 #include "Display.h"
 
 Display::Display()
@@ -86,5 +87,5 @@ void Display::setPixel(int x, int y, int state) {
 }
 
 void Display::update() {
-    memcpy(bitMatrixStaging, bitMatrix, sizeof(bitMatrix));
+    memcpy(bitMatrix, bitMatrixStaging, sizeof(bitMatrix));
 }
