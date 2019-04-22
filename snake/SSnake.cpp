@@ -5,7 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "SSnake.h"
-#include "display/Display.h"
+#include "../display/Display.h"
 
 
 SSnake::Segment::Segment(uint4 x, uint4 y)
@@ -27,14 +27,6 @@ SSnake::SSnake()
 {
     append(new Segment(8, 8));
     append(new Segment(8, 9));
-
-    /*** Temporary code for debugging ***/
-    for (int x = 0; x < 16; ++x) {
-        for (int y = 0; y < 16; ++y) {
-            debug[x][y] = false;
-        }
-    }
-    /*** End temporary ***/
 }
 
 void SSnake::grow() {
@@ -96,32 +88,6 @@ void SSnake::changeDirection(direction dir) {
     this->dir = dir;
 }
 
-void SSnake::printDebug() {
-    Segment *s = this->head;
-    while(s) {
-        debug[(int)s->x][(int)s->y] = true;
-        s = s->next;
-    }
-
-    for (int x = 0; x < 16; ++x) {
-        for (int y = 0; y < 16; ++y) {
-            char c;
-            if (debug[y][x]) c = 'O';
-            else c = '-';
-            std::cout << (char)c << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-    for (int x = 0; x < 16; ++x) {
-        for (int y = 0; y < 16; ++y) {
-            debug[x][y] = false;
-        }
-    }
-    usleep(500*1000);
-    std::cout << "\033[2J\033[1;1H"; // clear screen
-}
-
 void SSnake::printDisplay() {
     Display& d = Display::get();
     Segment *s = head;
@@ -131,40 +97,4 @@ void SSnake::printDisplay() {
     }
     d.update();
     usleep(500*1000);
-}
-
-int main() {
-    Display& d = Display::get();
-    d.start();
-
-    SSnake s;
-    s.grow();
-    s.printDisplay();
-    s.grow();
-    s.printDisplay();
-    s.grow();
-    s.printDisplay();
-    s.grow();
-    s.printDisplay();
-    s.changeDirection(left);
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.changeDirection(up);
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
-    s.move();
-    s.printDisplay();
 }

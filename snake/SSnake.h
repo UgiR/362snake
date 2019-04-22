@@ -9,7 +9,7 @@
 // Created by Ugnius on 4/17/2019.
 //
 
-#include "uint4.h"
+#include "../util/uint4.h"
 
 enum direction {
     left = 1,
