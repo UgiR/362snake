@@ -22,7 +22,9 @@ void SSnake::append(Segment *s) {
     }
 }
 
-SSnake::SSnake() {
+SSnake::SSnake()
+: head(nullptr), tail(nullptr)
+{
     append(new Segment(8, 8));
     append(new Segment(8, 9));
 
@@ -124,7 +126,7 @@ void SSnake::printDisplay() {
     Display& d = Display::get();
     Segment *s = head;
     while(s) {
-        d.setPixel(s->x, s->y);
+        d.setPixel((int)s->x, (int)s->y, 1);
         s = s->next;
     }
     d.update();
@@ -132,5 +134,37 @@ void SSnake::printDisplay() {
 }
 
 int main() {
+    Display& d = Display::get();
+    d.start();
+
     SSnake s;
+    s.grow();
+    s.printDisplay();
+    s.grow();
+    s.printDisplay();
+    s.grow();
+    s.printDisplay();
+    s.grow();
+    s.printDisplay();
+    s.changeDirection(left);
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.changeDirection(up);
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
+    s.move();
+    s.printDisplay();
 }

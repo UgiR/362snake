@@ -31,9 +31,10 @@ Display::~Display() {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
     }
+    sleep(1);
+    refreshThreadRunning = false;
     toggle(P_CLR);
     toggle(N_CLR);
-    refreshThreadRunning = false;
 }
 
 void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
@@ -62,6 +63,9 @@ void Display::refresh() {
         // Advance y-axis bit to next position
         digitalWrite(P_SER, 0b0);
         toggle(P_SRLCLK);
+        #ifdef SLOW
+        usleep(75 * 1000);
+        #endif
     }
 }
 
