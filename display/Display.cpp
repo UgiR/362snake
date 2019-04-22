@@ -30,9 +30,10 @@ Display::~Display() {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
     }
+    refreshThreadRunning = false;
     toggle(P_CLR);
     toggle(N_CLR);
-    refreshThreadRunning = false;
+
 }
 
 void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
