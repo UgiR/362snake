@@ -23,7 +23,7 @@ void SSnake::append(Segment *s) {
 }
 
 SSnake::SSnake()
-: dir{up}
+: head(nullptr), tail(nullptr), dir(up)
 {
     append(new Segment(8, 8));
     append(new Segment(8, 9));
@@ -91,7 +91,9 @@ void SSnake::changeDirection(direction dir) {
 void SSnake::loadToDisplay(Display& display) {
     Segment *s = head;
     while(s) {
-        display.setPixel(s->x, s->y);
+        display.setPixel(s->x, s->y, 1);
         s = s->next;
     }
+    d.update();
+    usleep(500*1000);
 }

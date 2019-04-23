@@ -68,6 +68,9 @@ void Display::refresh() {
         // Advance y-axis bit to next position
         digitalWrite(P_SER, 0b0);
         toggle(P_SRLCLK);
+        #ifdef SLOW
+        usleep(75 * 1000);
+        #endif
     }
 }
 
