@@ -8,11 +8,10 @@ void sigint_handler(int sig) {
   interupt = 1;
 }
 
-
 int main() {
   signal(SIGINT, sigint_handler);
   Display& d = Display::get();
-  d.start();
+  d.startDisplay();
   for (int i = 0; i < 16; ++i) {
     d.setPixel(i, i, 1);
     d.setPixel(15-i, i, 1);
