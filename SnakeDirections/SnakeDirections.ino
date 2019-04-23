@@ -25,17 +25,18 @@ void loop() {
   bs2 = digitalRead(button2);
   bs3 = digitalRead(button3);
   bs4 = digitalRead(button4);
+  
   if(bs1 == HIGH){
-    Serial.print("This direction is up");
+    Serial.print(1);
   }
   if(bs2 == HIGH){
-    Serial.print("This direction is down");
+    Serial.print(2);
   }
   if(bs3 == HIGH){
-    Serial.print("This direction is Left");
+    Serial.print(3);
   }
   if(bs4 == HIGH){
-    Serial.print("This direction is Right");
+    Serial.print(4);
   }
   delay(10);
 }
