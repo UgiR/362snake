@@ -3,7 +3,7 @@
 
 int main() {
   Display& d = Display::get();
-  d.start();
+  d.startDisplay();
   while(true){
   for (int x = 0; x < 16; ++x) {
     d.setPixel(x, x, 1);
