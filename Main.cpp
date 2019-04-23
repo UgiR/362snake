@@ -30,7 +30,7 @@ int main() {
     d.startDisplay();
 
     while (!interrupted) {
-        usleep(400 * 1000);
+        delay(400);
         s.move();
         s.loadToDisplay(d);
         d.update();

@@ -69,7 +69,7 @@ void Display::refresh() {
         digitalWrite(P_SER, 0b0);
         toggle(P_SRLCLK);
         #ifdef SLOW
-        usleep(25 * 1000);
+        delay(25);
         #endif
     }
 }
