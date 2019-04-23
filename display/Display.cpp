@@ -3,11 +3,16 @@
 //
 
 #include <cstring>
+#include <errno.h>
+#include <signal.h>
+#include <wiringSerial.h>
 #include "Display.h"
 
+
 Display::Display()
-: refreshThreadRunning{false}
+: displayRefreshing{false}, controllerListening{false}, controller_fd(-1)
 {
+    signal(SIGINT, sigintHandler);
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
@@ -31,10 +36,10 @@ Display::~Display() {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
     }
-    refreshThreadRunning = false;
+    displayRefreshing = false;
+    controllerListening = false;
     toggle(P_CLR);
     toggle(N_CLR);
-
 }
 
 void Display::shiftOut(uint_fast16_t data, int serial, int clock) {
@@ -66,18 +71,52 @@ void Display::refresh() {
     }
 }
 
+void Display::getControllerInput(const std::function<void(char)>& f) {
+    if (controller_fd == -1) {
+        fprintf(stderr, "Controller device not connected\n");
+        return;
+    }
+
+    int n;
+    char in;
+    if (n = serialDataAvail(controller_fd)) {
+        for (int i = 0; i < n; ++i) {
+            in = serialGetchar(controller_fd);
+            f(in);
+        }
+    }
+}
+}
+
 void Display::resetStage() {
     for (int i = 0; i < 16; ++i) {
         this->bitMatrixStaging[i] = 0xFFFF;
     }
 }
 
-void Display::start() {
-    refreshThreadRunning = true;
-    std::thread th(
-            [&]{while(refreshThreadRunning.load()) refresh();}
-    );
-    th.detach();
+void Display::startDisplay() {
+    if (!displayRefreshing) {
+        displayRefreshing = true;
+        std::thread th(
+           [&]{while(displayRefreshing.load()) refresh();}
+        );
+        th.detach();
+    }
+}
+
+void Display::startController(const std::function<void(char)& callback) {
+    if (controller_fd == -1) {
+        if ((controller_fd = serialOpen("/dev/ttyUSB0", 9600)) == -1)
+            fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
+    }
+
+    if (!controllerListening) {
+        controllerListening = true;
+        std::thread th{
+                [&]{while(controllerListening.load()) getControllerInput(callback);}
+        };
+        th.detach();
+    }
 }
 
 Display& Display::get() {

@@ -83,7 +83,9 @@ class Display {
 private:
     int bitMatrix[16];
     int bitMatrixStaging[16];
-    std::atomic<bool> refreshThreadRunning;
+    std::atomic<bool> displayRefreshing;
+    std::atomic<bool> controllerListening;
+    int controller_fd;
 
     Display();
 
@@ -107,6 +109,8 @@ private:
      */
     void refresh();
 
+    void getControllerInput();
+
     void resetStage();
 
 public:
@@ -121,7 +125,9 @@ public:
     /**
      * Spawns thread to constantly refresh display
      */
-    void start();
+    void startDisplay();
+
+    void startController(const std::function<void(char)& callback);
 
     /**
      *

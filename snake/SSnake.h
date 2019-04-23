@@ -49,7 +49,7 @@ private:
 
     Segment *head;  // head/front of snake
     Segment *tail;  // tail/end of snake
-    direction dir;  // direction snake is moving
+    std::atomic<direction> dir;  // direction snake is moving
 
     bool debug[16][16];  // temporary var for debug
 
@@ -84,12 +84,14 @@ public:
      */
     void changeDirection(direction dir);
 
+    void loadToDisplay(Display& display)
+
     /**
      * Temporary function to print a representation of the snake grid
      */
     void printDebug();
 
-    void printDisplay();
+    void loadToDisplay(Display& display);
 };
 
 #endif //INC_362SNAKE_SSNAKE_H
