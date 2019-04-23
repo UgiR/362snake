@@ -17,10 +17,10 @@ void sigintHandler(int sig) {
 int main() {
     signal(SIGINT, sigintHandler);
 
-    SSnake s = new SSnake();
+    SSnake s;
     Display& d = Display::get();
 
-    d.startController([&](char in) -> {
+    d.startController([&](char in) {
         if (isdigit(in)) {
             int in_ = in - '0';
             s.changeDirection((direction)in_);

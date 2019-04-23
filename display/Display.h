@@ -109,7 +109,7 @@ private:
      */
     void refresh();
 
-    void getControllerInput();
+    void getControllerInput(const std::function<void(char)>& f);
 
     void resetStage();
 
@@ -127,7 +127,7 @@ public:
      */
     void startDisplay();
 
-    void startController(const std::function<void(char)& callback);
+    void startController(const std::function<void(char)>& callback);
 
     /**
      *

@@ -9,7 +9,9 @@
 // Created by Ugnius on 4/17/2019.
 //
 
+#include <atomic>
 #include "../util/uint4.h"
+#include "../display/Display.h"
 
 enum direction {
     left = 1,
@@ -83,8 +85,6 @@ public:
      * @param dir new direction
      */
     void changeDirection(direction dir);
-
-    void loadToDisplay(Display& display)
 
     /**
      * Temporary function to print a representation of the snake grid

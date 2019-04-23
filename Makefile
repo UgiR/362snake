@@ -1,5 +1,8 @@
 all: pattern1 slow_pattern1 clean
 
+MainGame: display.o ssnake.o uint4.o
+	g++ Main.cpp display.o ssnake.o uint4.o -lwiringPi -pthread -o MainGame
+
 slow_pattern1: slow_display.o pattern1.o
 	g++ pattern1.o slow_display.o -lwiringPi -pthread -o slow_pattern1
 

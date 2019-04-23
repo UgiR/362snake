@@ -12,7 +12,7 @@
 Display::Display()
 : displayRefreshing{false}, controllerListening{false}, controller_fd(-1)
 {
-    signal(SIGINT, sigintHandler);
+    //signal(SIGINT, sigintHandler);
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
@@ -89,7 +89,6 @@ void Display::getControllerInput(const std::function<void(char)>& f) {
         }
     }
 }
-}
 
 void Display::resetStage() {
     for (int i = 0; i < 16; ++i) {
@@ -107,13 +106,13 @@ void Display::startDisplay() {
     }
 }
 
-void Display::startController(const std::function<void(char)& callback) {
+void Display::startController(const std::function<void(char)>& callback) {
     if (controller_fd == -1) {
-        if ((controller_fd = serialOpen("/dev/ttyUSB0", 9600)) == -1)
+        if ((controller_fd = serialOpen("/dev/ttyACM0", 9600)) == -1)
             fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 
-    if (!controllerListening) {
+    if (!controllerListening && controller_fd != -1) {
         controllerListening = true;
         std::thread th{
                 [&]{while(controllerListening.load()) getControllerInput(callback);}
