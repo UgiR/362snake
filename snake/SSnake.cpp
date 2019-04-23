@@ -2,8 +2,6 @@
 // Created by Ugnius on 4/17/2019.
 //
 
-#include <iostream>
-#include <unistd.h>
 #include "SSnake.h"
 #include "../display/Display.h"
 

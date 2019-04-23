@@ -2,17 +2,16 @@
 // Created by Ugnius on 3/28/2019.
 //
 
+#include <wiringSerial.h>
 #include <cstring>
 #include <errno.h>
-#include <signal.h>
-#include <wiringSerial.h>
+#include <thread>
 #include "Display.h"
 
 
 Display::Display()
 : displayRefreshing{false}, controllerListening{false}, controller_fd(-1)
 {
-    //signal(SIGINT, sigintHandler);
     for (int i = 0; i < 16; ++i) {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;

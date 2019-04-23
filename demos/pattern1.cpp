@@ -17,10 +17,8 @@ int main() {
     d.setPixel(15-i, i, 1);
   }
   d.update();
-  int i = 0;
-  while(i < 10) {
-    if (interupt) exit(0);
-    sleep(1);
-    ++i;
+
+  while(!interupt) {
+    delay(1000);
   }
 }

@@ -5,10 +5,7 @@
 #ifndef INC_362SNAKE_DISPLAY_H
 #define INC_362SNAKE_DISPLAY_H
 
-#include <wiringPi.h>
-#include <thread>
 #include <atomic>
-#include <unistd.h>
 #include <stdint.h>
 
 /**
