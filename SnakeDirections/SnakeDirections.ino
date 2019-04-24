@@ -44,12 +44,12 @@ void loop() {
   bs4 = digitalRead(button4);
   //check if pin is pressed
   if(bs1 == LOW){
-    Serial.print(1);
+    Serial.print(2);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("The Snake Game");
     lcd.setCursor(0, 1);
-    lcd.print("Going left");
+    lcd.print("Going right");
     //iterate through notes
     for(int note = 0; note < 1; note++){
       //calculate duration
@@ -61,12 +61,12 @@ void loop() {
     digitalWrite(button1,HIGH);
   }
   if(bs2 == LOW){
-    Serial.print(2);
+    Serial.print(4);
      lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("The Snake Game");
       lcd.setCursor(0, 1);
-      lcd.print("Going up");
+      lcd.print("Going down");
     //iterate through notes
     for(int note = 0; note < 1; note++){
       //calculate duration
@@ -83,7 +83,7 @@ void loop() {
      lcd.setCursor(0, 0);
      lcd.print("The Snake Game");
      lcd.setCursor(0, 1);
-     lcd.print("Going down");
+     lcd.print("Going up");
     //iterate through notes
     for(int note = 0; note < 1; note++){
       //calculate duration
@@ -95,12 +95,12 @@ void loop() {
     digitalWrite(button3,HIGH);
   }
   if(bs4 == LOW){
-    Serial.print(4);
+    Serial.print(1);
      lcd.clear();
      lcd.setCursor(0, 0);
      lcd.print("The Snake Game");
       lcd.setCursor(0, 1);
-     lcd.print("Going right");
+     lcd.print("Going left");
     //iterate through notes
     for(int note = 0; note < 1; note++){
       //calculate duration
