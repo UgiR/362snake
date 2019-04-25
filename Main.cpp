@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <signal.h>
+#include <errno.h>
 #include "display/Display.h"
 #include "snake/SSnake.h"
 
@@ -14,8 +15,19 @@ void sigintHandler(int sig) {
     interrupted = 1;
 }
 
+void init() {
+    struct sigaction sigint_sa;
+    sigint_sa.sa_handler = sigintHandler;
+    sigemptyset(&sigint_sa.sa_mask);
+    sigint_sa.sa_flags = SA_RESTART;
+    if (sigaction(SIGINT, &sigint_sa, NULL) < 0) {
+        fprintf(stderr, "sigaction error: %s\n", strerror(errno));
+        exit(0);
+    }
+}
+
 int main() {
-    signal(SIGINT, sigintHandler);
+    init();
 
     SSnake s;
     Display& d = Display::get();
@@ -29,10 +41,13 @@ int main() {
 
     d.startDisplay();
 
-    while (!interrupted) {
+    while (!interrupted && s.getGameRunning()) {
         delay(400);
         s.move();
         s.loadToDisplay(d);
         d.update();
     }
+
+    int score = s.getScore();
+    // HTTP REQUEST TODO
 }

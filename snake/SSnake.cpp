@@ -2,6 +2,8 @@
 // Created by Ugnius on 4/17/2019.
 //
 
+#include <stdlib.h>
+#include <time.h>
 #include "SSnake.h"
 #include "../display/Display.h"
 
@@ -20,11 +22,54 @@ void SSnake::append(Segment *s) {
     }
 }
 
+bool SSnake::withinSnake(int x, int y, bool includeHead = true) {
+    Segment *s = head;
+    if (!includeHead) s = s->next;
+    while(s) {
+        if (s->x == x && s->y == y) return true;
+        s = s->next;
+    }
+    return false;
+}
+
+int SSnake::rand15() {
+    static bool seed = false;
+    if (!seed) {
+        srand(time(NULL));
+        seed = true;
+    }
+    return (rand() % 16);
+}
+
+void SSnake::generateFood() {
+    int x = rand15();
+    int y = rand15();
+    while (withinSnake(x, y)) {
+        x = rand15();
+        y = rand15();
+    }
+    food = Segment(rand15(), rand15());
+}
+
 SSnake::SSnake()
-: head(nullptr), tail(nullptr), dir{up}
+: gameRunning(true), head(nullptr), tail(nullptr), dir{up}, food(rand15(), rand15())
 {
     append(new Segment(8, 8));
     append(new Segment(8, 9));
+}
+
+bool getGameRunning() {
+    return gameRunning;
+}
+
+int getScore() {
+    int score = 0;
+    Segment *s = head;
+    while(s) {
+        ++score;
+        s = s->next;
+    }
+    return score;
 }
 
 void SSnake::grow() {
@@ -79,6 +124,17 @@ void SSnake::move() {
         px = temp_px;
         py = temp_py;
         curr = curr->next;
+    }
+
+    // Check if snake has encountered food
+    if (head->x == food.x && head->y == food.y) {
+        grow();
+        generateFood();
+    }
+
+    // Check if snake has collided with itself
+    if (withinSnake(head->x, head->y, false)) {
+        gameRunning = false;
     }
 }
 

@@ -51,15 +51,21 @@ private:
 
     Segment *head;  // head/front of snake
     Segment *tail;  // tail/end of snake
+    Segment food;
     std::atomic<direction> dir;  // direction snake is moving
-
-    bool debug[16][16];  // temporary var for debug
+    bool gameRunning;
 
     /**
      * Appends a segment to the end of the snake
      * @param s Segment* to append
      */
     void append(Segment *s);
+
+    bool withinSnake(int x, int y);
+
+    static int rand15();
+
+    void generateFood();
 
 public:
 
@@ -68,6 +74,10 @@ public:
      * Creates a snake with 2 initial segments
      */
     SSnake();
+
+    bool getGameRunning();
+
+    int getScore();
 
     /**
      * Grows the snake by adding one segment to the end of the snake
