@@ -96,11 +96,6 @@ public:
      */
     void changeDirection(direction dir);
 
-    /**
-     * Temporary function to print a representation of the snake grid
-     */
-    void printDebug();
-
     void loadToDisplay(Display& display);
 };
 

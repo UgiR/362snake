@@ -11,6 +11,13 @@
 SSnake::Segment::Segment(uint4 x, uint4 y)
     : next(nullptr), prev(nullptr), x(x), y(y) {}
 
+SSnake::SSnake()
+        : gameRunning(true), head(nullptr), tail(nullptr), dir{up}, food(rand15(), rand15())
+{
+    append(new Segment(8, 8));
+    append(new Segment(8, 9));
+}
+
 void SSnake::append(Segment *s) {
     if (tail) { // if tail exists (list is not empty)
         s->prev = tail;
@@ -51,18 +58,11 @@ void SSnake::generateFood() {
     food = Segment(rand15(), rand15());
 }
 
-SSnake::SSnake()
-: gameRunning(true), head(nullptr), tail(nullptr), dir{up}, food(rand15(), rand15())
-{
-    append(new Segment(8, 8));
-    append(new Segment(8, 9));
-}
-
-bool getGameRunning() {
+bool SSnake::getGameRunning() {
     return gameRunning;
 }
 
-int getScore() {
+int SSnake::getScore() {
     int score = 0;
     Segment *s = head;
     while(s) {
