@@ -5,19 +5,28 @@
     <title>Snake - CS 362</title>
 </head>
 <body style="background-color:green;">
-<font size = "5">
+<h3>RECENT</h3>
+<p>Score: {{ recent.value }}</p>
+
 <h3>HI SCORES</h3>
 
 <table>
-    <font size = "4">
-    {% for score in scores %}
-        <tr>
-          <td>
-            <font size = "4">
-            {{ score.value }}
-          </td>
-        </tr>
-    {% endfor %}
+<tr>
+    <th>Score</th>
+    <th>Timestamp</th>
+</tr>
+
+{% for score in scores %}
+<tr>
+    <td>
+    {{ score.value }}
+    </td>
+    <td>
+    {{ score.timestamp }}
+    </td>
+</tr>
+{% endfor %}
+
 </table>
 
 </body>

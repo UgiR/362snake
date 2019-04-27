@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, abort, jsonify
+import datetime as dt
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
@@ -34,18 +35,22 @@ class CRUD:
 
 
 class Score(db.Model, CRUD):
+    __tablename__ = 'scores'
     id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime, default=dt.datetime.utcnow)
 
     def to_dict(self):
         return {'id': self.id,
-                'value': self.value}
+                'value': self.value,
+                'timestamp': self.timestamp}
 
 
 @app.route('/')
 def index():
     scores_ = Score.query.order_by(Score.value.desc()).all()
-    return render_template('index.html', scores=scores_)
+    recent = Score.query.order_by(Score.id.desc()).first()
+    return render_template('index.html', scores=scores_, recent=recent)
 
 
 @app.route('/scores', methods=['GET', 'POST'])
