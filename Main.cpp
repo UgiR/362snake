@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
+#include <wiringPi.h>
+#include <string.h>
 #include "display/Display.h"
 #include "snake/SSnake.h"
 

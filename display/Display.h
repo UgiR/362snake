@@ -5,6 +5,7 @@
 #ifndef INC_362SNAKE_DISPLAY_H
 #define INC_362SNAKE_DISPLAY_H
 
+#include <functional>
 #include <atomic>
 #include <stdint.h>
 

@@ -2,6 +2,7 @@
 // Created by Ugnius on 3/28/2019.
 //
 
+#include <wiringPi.h>
 #include <wiringSerial.h>
 #include <cstring>
 #include <errno.h>

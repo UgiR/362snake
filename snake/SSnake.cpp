@@ -33,7 +33,7 @@ bool SSnake::withinSnake(int x, int y, bool includeHead = true) {
     Segment *s = head;
     if (!includeHead) s = s->next;
     while(s) {
-        if (s->x == x && s->y == y) return true;
+        if ((int)s->x == x && (int)s->y == y) return true;
         s = s->next;
     }
     return false;

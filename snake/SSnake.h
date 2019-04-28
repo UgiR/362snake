@@ -61,7 +61,7 @@ private:
      */
     void append(Segment *s);
 
-    bool withinSnake(int x, int y);
+    bool withinSnake(int x, int y, bool includeHead);
 
     static int rand15();
 
