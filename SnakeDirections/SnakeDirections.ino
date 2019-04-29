@@ -1,4 +1,5 @@
 //Created by Stephen Lambert
+// Errors were corrected with assistance from Uginus and Alexander
 //arduino code to display the snake direction (up,down,left,right)
 //using buttons and the serial port
 //declare buttons variables
@@ -9,6 +10,7 @@ const int button1 = 6;
 const int button2 = 7;
 const int button3 = 8;
 const int button4 = 9;
+const int buz = A0;
 //declares button state variables
 int bs1;
 int bs2;
@@ -44,19 +46,15 @@ void loop() {
   bs4 = digitalRead(button4);
   //check if pin is pressed
   if(bs1 == LOW){
-    Serial.print(2);
+    Serial.print(3);
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("The Snake Game");
     lcd.setCursor(0, 1);
-    lcd.print("Going right");
+    lcd.print("Going up");
     //iterate through notes
     for(int note = 0; note < 1; note++){
-      //calculate duration
-      int noteDurations = 1000 / noteDuration[note];
-      tone(10,melody[note],noteDurations);
-      //stop tone
-      noTone(10);
+      analogWrite(buz, 300);
     }
     digitalWrite(button1,HIGH);
   }
@@ -69,28 +67,20 @@ void loop() {
       lcd.print("Going down");
     //iterate through notes
     for(int note = 0; note < 1; note++){
-      //calculate duration
-      int noteDurations = 1000 / noteDuration[note];
-      tone(10,melody[note],noteDurations);
-      //stop tone
-      noTone(10);
+      analogWrite(buz, 300);
     }
     digitalWrite(button2,HIGH);
   }
   if(bs3 == LOW){
-    Serial.print(3);
+    Serial.print(2);
      lcd.clear();
      lcd.setCursor(0, 0);
      lcd.print("The Snake Game");
      lcd.setCursor(0, 1);
-     lcd.print("Going up");
+     lcd.print("Going Left");
     //iterate through notes
     for(int note = 0; note < 1; note++){
-      //calculate duration
-      int noteDurations = 1000 / noteDuration[note];
-      tone(10,melody[note],noteDurations);
-      //stop tone
-      noTone(10);
+      analogWrite(buz, 300);
     }
     digitalWrite(button3,HIGH);
   }
@@ -100,14 +90,10 @@ void loop() {
      lcd.setCursor(0, 0);
      lcd.print("The Snake Game");
       lcd.setCursor(0, 1);
-     lcd.print("Going left");
+     lcd.print("Going Right");
     //iterate through notes
     for(int note = 0; note < 1; note++){
-      //calculate duration
-      int noteDurations = 1000 / noteDuration[note];
-      tone(10,melody[note],noteDurations);
-      //stop tone
-      noTone(10);
+      analogWrite(buz, 300);
     }
     digitalWrite(button4,HIGH);
   }
@@ -116,4 +102,6 @@ void loop() {
   digitalWrite(button2,HIGH);
   digitalWrite(button3,HIGH);
   digitalWrite(button4,HIGH);
+  delay(5);
+  analogWrite(buz, 0);
 }
