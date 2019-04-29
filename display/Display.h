@@ -81,7 +81,9 @@ class Display {
 private:
     int bitMatrix[16];
     int bitMatrixStaging[16];
+    std::thread displayThread;
     std::atomic<bool> displayRefreshing;
+    std::thread controllerThread;
     std::atomic<bool> controllerListening;
     int controller_fd;
 

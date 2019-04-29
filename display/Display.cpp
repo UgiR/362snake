@@ -36,8 +36,17 @@ Display::~Display() {
         this->bitMatrix[i] = 0xFFFF;
         this->bitMatrixStaging[i] = 0xFFFF;
     }
-    displayRefreshing = false;
-    controllerListening = false;
+
+    if (displayRefreshing) {
+        displayRefreshing = false;
+        displayThread.join();
+    }
+
+    if (controllerListening) {
+        controllerListening = false;
+        controllerThread.join();
+    }
+
     toggle(P_CLR);
     toggle(N_CLR);
 }
@@ -99,10 +108,7 @@ void Display::resetStage() {
 void Display::startDisplay() {
     if (!displayRefreshing) {
         displayRefreshing = true;
-        std::thread th(
-           [&]{while(displayRefreshing.load()) refresh();}
-        );
-        th.detach();
+        displayThread = std::thread{[&]{while(displayRefreshing.load()) refresh();}};
     }
 }
 
@@ -114,10 +120,7 @@ void Display::startController(const std::function<void(char)>& callback) {
 
     if (!controllerListening && controller_fd != -1) {
         controllerListening = true;
-        std::thread th{
-                [&]{while(controllerListening.load()) getControllerInput(callback);}
-        };
-        th.detach();
+        controllerThread = std::thread{[&]{while(controllerListening.load()) getControllerInput(callback);}};
     }
 }
 
