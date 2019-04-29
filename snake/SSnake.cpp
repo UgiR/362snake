@@ -18,6 +18,16 @@ SSnake::SSnake()
     append(new Segment(8, 9));
 }
 
+~SSnake() {
+    Segment *s = head;
+    Segment *temp;
+    while (s) {
+        temp = s->next;
+        free(s);
+        s = temp;
+    }
+}
+
 void SSnake::append(Segment *s) {
     if (tail) { // if tail exists (list is not empty)
         s->prev = tail;

@@ -75,6 +75,8 @@ public:
      */
     SSnake();
 
+    ~SSnake();
+
     bool getGameRunning();
 
     int getScore();
@@ -96,6 +98,7 @@ public:
      */
     void changeDirection(direction dir);
 
+    // TODO: Change to return a list of coordinates instead of display parameter
     void loadToDisplay(Display& display);
 };
 
