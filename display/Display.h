@@ -19,7 +19,7 @@
  * technically two separate registers.
  *
  * The physical display is a 16 x 16 matrix of LED's, making up a total of 256 individual LEDs. In every row of the
- * matrix, each LEDs' cathodes are connected in parallel. In every column of the matrix, each LEDs' anodes are connected
+ * matrix, each LEDs' anodes are connected in parallel. In every column of the matrix, each LEDs' cathodes are connected
  * in parallel. All rows are connected to a 16-bit register and all columns are connected to a different 16-bit register.
  * These registers' pins are differentiated below by a prefix. The register corresponding to the rows (the negative
  * connections) is controlled by the pins prefixed by 'N_'. The register corresponding to the columns (the positive
